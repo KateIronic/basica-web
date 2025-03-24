@@ -10,7 +10,6 @@ export function MacbookScrollDemo() {
             Try to write something in basica.
           </span>
         }
-        src={`/linear.webp`}
         showGradient={false}
       />
     </div>
