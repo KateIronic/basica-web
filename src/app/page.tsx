@@ -3,10 +3,12 @@ import { HeroParallax } from "@/components/global/connect-paralax";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import { InfiniteMovingCards } from "@/components/global/infinite-moving-cards";
 import { LampComponent } from "@/components/global/lamp";
+// import { MacbookScroll } from "@/components/ui/macbook-scroll";
 import Navbar from "@/components/global/Navbar";
 import { clients, products } from "@/lib/constants";
 import { CheckIcon } from "lucide-react";
 import Image from "next/image";
+import { MacbookScrollDemo } from "@/components/global/macbook-scroll-demo";
 
 export default function Home() {
   //WIP: remove fault IMAge for home page
@@ -38,6 +40,10 @@ export default function Home() {
           </ContainerScroll>
         </div>
       </section>
+       {/* Macbook Scroll Component added here */}
+       {/* <section> */}
+        <MacbookScrollDemo/>
+       {/* </section> */}
       <InfiniteMovingCards
         className=""
         items={clients}
