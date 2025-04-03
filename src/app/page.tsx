@@ -1,14 +1,14 @@
-import { CardBody, CardContainer, CardItem } from "@/components/global/3d-card";
+// import { CardBody, CardContainer, CardItem } from "@/components/global/3d-card";
 import { HeroParallax } from "@/components/global/connect-paralax";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import { InfiniteMovingCards } from "@/components/global/infinite-moving-cards";
-import { LampComponent } from "@/components/global/lamp";
-// import { MacbookScroll } from "@/components/ui/macbook-scroll";
+// import { LampComponent } from "@/components/global/lamp";
 import Navbar from "@/components/global/Navbar";
 import { clients, products } from "@/lib/constants";
-import { CheckIcon } from "lucide-react";
-import Image from "next/image";
+// import { CheckIcon } from "lucide-react";
+// import Image from "next/image";
 import { MacbookScrollDemo } from "@/components/global/macbook-scroll-demo";
+import Footer from "@/components/global/Footer";
 
 export default function Home() {
   //WIP: remove fault IMAge for home page
@@ -18,26 +18,28 @@ export default function Home() {
       <section className="w-full h-full bg-neutral-950 rounded-md  !overflow-visible relative flex flex-col items-center  antialiased">
         <div className="absolute inset-0  h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_35%,#223_100%)]"></div>
         <div className="flex flex-col overflow-hidden">
-          <ContainerScroll
-            titleComponent={
-              <>
-                <h1 className="text-4xl font-semibold text-black dark:text-white">
-                  Unleash the power of <br />
-                  <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none">
-                    ZapFlow
-                  </span>
-                </h1>
-              </>
-            }>
-            <Image
-              src="/temp-banner.png"
-              alt="hero"
-              height={720}
-              width={1400}
-              className="mx-auto rounded-2xl object-cover h-full object-left-top"
-              draggable={false}
-            />
-          </ContainerScroll>
+        <ContainerScroll
+  titleComponent={
+    <>
+      <h1 className="text-4xl font-semibold text-black dark:text-white">
+        Introducing <br />
+        <span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none">
+          Basica
+        </span>
+      </h1>
+    </>
+  }
+>
+  <video
+    src="/banner-2.mp4"
+    autoPlay
+    loop
+    muted
+    playsInline
+    className="mx-auto rounded-2xl object-cover h-full object-left-top"
+  />
+</ContainerScroll>
+
         </div>
       </section>
        {/* Macbook Scroll Component added here */}
@@ -54,8 +56,8 @@ export default function Home() {
         <HeroParallax products={products}></HeroParallax>
       </section>
       <section className="mt-[200px]">
-        <LampComponent />
-        <div className="flex flex-wrap items-center justify-center flex-col md:flex-row gap-8 -mt-72">
+        {/* <LampComponent /> */}
+        {/* <div className="flex flex-wrap items-center justify-center flex-col md:flex-row gap-8 -mt-72">
           <CardContainer className="inter-var ">
             <CardBody className="bg-gray-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-neutral-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-full md:!w-[350px] h-auto rounded-xl p-6 border">
               <CardItem
@@ -185,8 +187,10 @@ export default function Home() {
               </div>
             </CardBody>
           </CardContainer>
-        </div>
+        </div> */}
       </section>
+      <div className="mt-10"></div>
+      <Footer />
     </main>
   );
 }

@@ -2,31 +2,42 @@ import React, { useState } from "react";
 import Editor from "@monaco-editor/react";
 import Terminal from "@/components/global/terminal";
 import { FaCircle } from "react-icons/fa";
+import axios from "axios";
 
 const CodeEditor: React.FC = () => {
   const [code, setCode] = useState("");
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
-  const [terminalOutput, setTerminalOutput] = useState(""); // ✅ Now used inside the Terminal
+  const [terminalOutput, setTerminalOutput] = useState("");
+
+  const API_URL = "https://basica-py.onrender.com/";
 
   const handleRun = async () => {
+    // Preprocess code: Remove \r and replace newlines with semicolons
+    const processedCode = code.replace(/\r/g, "").split("\n").join(";");
+
+  
     try {
-      const response = await fetch("http://localhost:5000/compile", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code }),
-      });
-      const data = await response.json();
-      setTerminalOutput((prev) => prev + data.output + "\n");
-    } catch (error) {
+      const response = await axios.post(`${API_URL}/run`, { code: processedCode });
+  
+      // Display error if present, otherwise result
+      setTerminalOutput(response.data.error || response.data.result);
+    } catch (error: any) {
       console.error("Error:", error);
-      setTerminalOutput((prev) => prev + "Error compiling code.\n");
+      
+      // Handle Axios error structure
+      if (error.response) {
+        setTerminalOutput(`Server Error: ${error.response.data?.message || "Unknown error"}`);
+      } else if (error.request) {
+        setTerminalOutput("Error: No response from server.");
+      } else {
+        setTerminalOutput("Error: Request failed.");
+      }
     }
   };
 
   return (
-    <div className="relative flex flex-col w-full bg-gray-900 bg-opacity-25 rounded-xl overflow-hidden shadow-lg border border-gray-700">
-      {/* VS Code Style Title Bar */}
-      <div className="flex items-center justify-between bg-gray-800 bg-opacity-25 px-4 py-2">
+    <div className="relative flex flex-col w-full bg-[#00000030] rounded-xl overflow-hidden">
+      <div className="flex items-center justify-between bg-[#00000030] px-4 py-2">
         <div className="flex space-x-2">
           <FaCircle className="text-red-500" size={12} />
           <FaCircle className="text-yellow-500" size={12} />
@@ -40,15 +51,13 @@ const CodeEditor: React.FC = () => {
         </button>
         <div></div>
       </div>
-
-      {/* Editor & Terminal Container */}
       <div
         className="relative transition-all duration-300"
         style={{ height: isTerminalOpen ? "300px" : "300px" }}
       >
         <Editor
           height={isTerminalOpen ? "50%" : "100%"}
-          defaultLanguage="python"
+          defaultLanguage="basic"
           value={code}
           onChange={(value) => setCode(value || "")}
           options={{
@@ -63,25 +72,21 @@ const CodeEditor: React.FC = () => {
               inherit: true,
               rules: [],
               colors: {
-                "editor.background": "#11182740",
+                "editor.background": "#181a1c40",
               },
             });
             monaco.editor.setTheme("transparent-theme");
           }}
           className="p-2 bg-opacity-75"
         />
-
-        {/* Terminal Section */}
         {isTerminalOpen && (
-          <div className="absolute bottom-0 left-0 w-full h-1/2 bg-black/95 bg-opacity-25 border-t border-gray-700 p-2 transition-all duration-300">
+          <div className="absolute bottom-0 left-0 w-full h-1/2 bg-black/95 bg-opacity-25 border-t border-[#181a1c20] p-2 transition-all duration-300">
             <Terminal height="100%" className="h-full w-full" output={terminalOutput} />
           </div>
         )}
       </div>
-
-      {/* Terminal Toggle Button */}
       <button
-        className="bg-gray-900 text-white bg-opacity-25 px-4 py-2 text-sm font-semibold border-t border-gray-700 flex justify-between items-center w-full"
+        className="bg-[#181a1c40] text-white bg-opacity-25 px-4 py-2 text-sm font-semibold flex justify-between items-center w-full"
         onClick={() => setIsTerminalOpen(!isTerminalOpen)}
       >
         Terminal {isTerminalOpen ? "⬇️" : "⬆️"}
