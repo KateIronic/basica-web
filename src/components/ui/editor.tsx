@@ -12,23 +12,17 @@ const CodeEditor: React.FC = () => {
   const API_URL = "https://basica-py.onrender.com/";
 
   const handleRun = async () => {
-    // Preprocess code: Remove \r and replace newlines with semicolons
     const processedCode = code.replace(/\r/g, "").split("\n").join(";");
 
-  
     try {
       const response = await axios.post(`${API_URL}/run`, { code: processedCode });
-  
-      // Display error if present, otherwise result
+
       setTerminalOutput(response.data.error || response.data.result);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error:", error);
       
-      // Handle Axios error structure
-      if (error.response) {
-        setTerminalOutput(`Server Error: ${error.response.data?.message || "Unknown error"}`);
-      } else if (error.request) {
-        setTerminalOutput("Error: No response from server.");
+      if (axios.isAxiosError(error)) {
+        setTerminalOutput(`Server Error: ${error.response?.data?.message || "Unknown error"}`);
       } else {
         setTerminalOutput("Error: Request failed.");
       }
@@ -66,18 +60,6 @@ const CodeEditor: React.FC = () => {
             scrollBeyondLastLine: false,
             cursorBlinking: "smooth",
           }}
-          onMount={(editor, monaco) => {
-            monaco.editor.defineTheme("transparent-theme", {
-              base: "vs-dark",
-              inherit: true,
-              rules: [],
-              colors: {
-                "editor.background": "#181a1c40",
-              },
-            });
-            monaco.editor.setTheme("transparent-theme");
-          }}
-          className="p-2 bg-opacity-75"
         />
         {isTerminalOpen && (
           <div className="absolute bottom-0 left-0 w-full h-1/2 bg-black/95 bg-opacity-25 border-t border-[#181a1c20] p-2 transition-all duration-300">
